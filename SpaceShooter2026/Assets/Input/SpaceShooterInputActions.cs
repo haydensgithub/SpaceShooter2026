@@ -127,6 +127,15 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveHorizontally"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ee5e8f2-b1bf-4a9d-b6be-16e06127a6f7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -228,6 +237,72 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
                     ""action"": ""SuperFire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""9cced925-b846-4bdf-bb8c-bd3f07d8de1e"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHorizontally"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""14fdcfdc-d719-439c-9793-a1e4845a7c49"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHorizontally"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4309e6c8-6fa1-4e8c-a8a0-cc2e35a6a5b3"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHorizontally"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""90ce77ad-a397-4c85-a53a-65debd9264bd"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHorizontally"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""7a20dfbc-4e67-4f08-8874-658fb37f2e9a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHorizontally"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1de3b8e1-8e31-4494-9b50-9330e963b773"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveHorizontally"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -240,6 +315,7 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
         m_Standard_MoveVertically = m_Standard.FindAction("MoveVertically", throwIfNotFound: true);
         m_Standard_Shield = m_Standard.FindAction("Shield", throwIfNotFound: true);
         m_Standard_SuperFire = m_Standard.FindAction("SuperFire", throwIfNotFound: true);
+        m_Standard_MoveHorizontally = m_Standard.FindAction("MoveHorizontally", throwIfNotFound: true);
     }
 
     ~@SpaceShooterInputActions()
@@ -324,6 +400,7 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
     private readonly InputAction m_Standard_MoveVertically;
     private readonly InputAction m_Standard_Shield;
     private readonly InputAction m_Standard_SuperFire;
+    private readonly InputAction m_Standard_MoveHorizontally;
     /// <summary>
     /// Provides access to input actions defined in input action map "Standard".
     /// </summary>
@@ -351,6 +428,10 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
         /// Provides access to the underlying input action "Standard/SuperFire".
         /// </summary>
         public InputAction @SuperFire => m_Wrapper.m_Standard_SuperFire;
+        /// <summary>
+        /// Provides access to the underlying input action "Standard/MoveHorizontally".
+        /// </summary>
+        public InputAction @MoveHorizontally => m_Wrapper.m_Standard_MoveHorizontally;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -389,6 +470,9 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
             @SuperFire.started += instance.OnSuperFire;
             @SuperFire.performed += instance.OnSuperFire;
             @SuperFire.canceled += instance.OnSuperFire;
+            @MoveHorizontally.started += instance.OnMoveHorizontally;
+            @MoveHorizontally.performed += instance.OnMoveHorizontally;
+            @MoveHorizontally.canceled += instance.OnMoveHorizontally;
         }
 
         /// <summary>
@@ -412,6 +496,9 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
             @SuperFire.started -= instance.OnSuperFire;
             @SuperFire.performed -= instance.OnSuperFire;
             @SuperFire.canceled -= instance.OnSuperFire;
+            @MoveHorizontally.started -= instance.OnMoveHorizontally;
+            @MoveHorizontally.performed -= instance.OnMoveHorizontally;
+            @MoveHorizontally.canceled -= instance.OnMoveHorizontally;
         }
 
         /// <summary>
@@ -480,5 +567,12 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSuperFire(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MoveHorizontally" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMoveHorizontally(InputAction.CallbackContext context);
     }
 }
