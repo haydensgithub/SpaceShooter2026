@@ -16,6 +16,8 @@ public class Enemy : MonoBehaviour {
       Destroy(gameObject);
       Destroy(c.gameObject);
       Score.Instance.HitEnemy();
+      // Added for death timer
+      DeathTimer.Instance.AddTime(2f);
     }
     else if (c.gameObject.CompareTag("Player")) {
       Destroy(gameObject);
