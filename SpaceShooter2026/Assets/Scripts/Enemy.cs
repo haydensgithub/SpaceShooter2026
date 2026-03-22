@@ -34,18 +34,23 @@ public class Enemy : MonoBehaviour
     {
         if (c.gameObject.CompareTag("Bullet"))
         {
-            var expoObj = Instantiate(expoPrefab, transform.position, Quaternion.identity);
-            Destroy(expoObj, expoObj.GetComponent<ParticleSystem>().main.duration);
-            Destroy(gameObject);
-            Destroy(c.gameObject);
-            Score.Instance.HitEnemy();
-            // Added for death timer
-            DeathTimer.Instance.AddTime(2f);
+            Die(c);
         }
         else if (c.gameObject.CompareTag("Player"))
         {
             Destroy(gameObject);
             c.gameObject.GetComponent<Player>().DamageFromEnemy();
         }
+    }
+
+    public void Die(Collider2D c)
+    {
+        var expoObj = Instantiate(expoPrefab, transform.position, Quaternion.identity);
+        Destroy(expoObj, expoObj.GetComponent<ParticleSystem>().main.duration);
+        Destroy(gameObject);
+        Destroy(c.gameObject);
+        Score.Instance.HitEnemy();
+        // Added for death timer
+        DeathTimer.Instance.AddTime(2f);
     }
 }

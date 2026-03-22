@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     // set in inspector
     public float speed = 0.1f;
     public GameObject bulletPrefab;
+    public GameObject missilePrefab;
     public Transform bulletSpawnPoint;
     public Slider sliderHealth;
     public Shield shield;
@@ -52,12 +53,9 @@ public class Player : MonoBehaviour
             audioSrc.clip = clipNormalFire;
             audioSrc.Play();
         }
-        if (SpaceShooterInput.Instance.input.SuperFire.WasPressedThisFrame())
+        else if (SpaceShooterInput.Instance.input.SuperFire.WasPressedThisFrame())
         {
-            GameObject bulletObj = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
-            bulletObj.GetComponent<Bullet>().speed *= 2;
-            Instantiate(bulletPrefab, bulletSpawnPoint.position + Vector3.up * 0.5f, Quaternion.identity);
-            Instantiate(bulletPrefab, bulletSpawnPoint.position + Vector3.up * -0.5f, Quaternion.identity);
+            GameObject missileObject = Instantiate(missilePrefab, bulletSpawnPoint.position, transform.rotation);
             audioSrc.clip = clipSuperFire;
             audioSrc.Play();
         }

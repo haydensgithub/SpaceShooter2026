@@ -2513,6 +2513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   speed: 6
   bulletPrefab: {fileID: 7997487652698694584, guid: b45c530985e3745f2970c56d18a41a81, type: 3}
+  missilePrefab: {fileID: 7997487652698694584, guid: 150cb1be99c06e24ca30aaa02316c8ad, type: 3}
   bulletSpawnPoint: {fileID: 101424959}
   sliderHealth: {fileID: 73900209}
   shield: {fileID: 240335427}
