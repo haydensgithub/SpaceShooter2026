@@ -142,7 +142,7 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
                 {
                     ""name"": """",
                     ""id"": ""e1e0236b-3376-406b-b1e6-c86c90a8e384"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -230,7 +230,7 @@ public partial class @SpaceShooterInputActions: IInputActionCollection2, IDispos
                 {
                     ""name"": """",
                     ""id"": ""73f58e99-5f91-4e2f-a3d7-d6d48299a269"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

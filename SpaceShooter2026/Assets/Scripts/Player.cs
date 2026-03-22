@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     public AudioClip clipHurt;
     public AudioClip clipPowerupReceived;
 
+    public static Player instance { get; private set; }
+
     // private fields
     private AudioSource audioSrc;
     private float health;
@@ -31,13 +33,22 @@ public class Player : MonoBehaviour
         RBody = GetComponent<Rigidbody2D>();
     }
 
+    void OnEnable()
+    {
+        instance = this;
+    }
+    void OnDisable()
+    {
+        instance = null;
+    }
+
     private void Update()
     {
         sliderHealth.value = health;
 
         if (SpaceShooterInput.Instance.input.Fire.WasPressedThisFrame())
         {
-            GameObject bulletObj = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            GameObject bulletObj = Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
             audioSrc.clip = clipNormalFire;
             audioSrc.Play();
         }
@@ -103,8 +114,9 @@ public class Player : MonoBehaviour
     public void RotatePlayer()
     {
         // Grab the mouse location
-        Vector3 MouseLocation = Mouse.current.position.ReadValue();
-        MouseLocation.z = 0f; // Set z to 0 just in case
+        Vector3 MouseScreen = Mouse.current.position.ReadValue();
+        Vector3 MouseLocation = Camera.main.ScreenToWorldPoint(new Vector3(MouseScreen.x, MouseScreen.y, 0f));
+        //MouseLocation.z = 0f; // Set z to 0 just in case
 
         // Get the vector facing the mouse
         Vector3 MouseDirection = MouseLocation - transform.position;
