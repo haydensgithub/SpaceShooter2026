@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     public GameObject missilePrefab;
     public Transform bulletSpawnPoint;
     public Slider sliderHealth;
-    public Shield shield;
     public GameObject expoPrefab;
     public UI ui;
     public AudioClip clipNormalFire;
@@ -75,7 +74,7 @@ public class Player : MonoBehaviour
 
     public void DamageFromEnemy()
     {
-        if (!shield.IsActive)
+        if (true)
         {
             audioSrc.clip = clipHurt;
             audioSrc.Play();
@@ -88,13 +87,6 @@ public class Player : MonoBehaviour
                 ui.ShowGameOver();
             }
         }
-    }
-
-    public void RefillShield()
-    {
-        audioSrc.clip = clipPowerupReceived;
-        audioSrc.Play();
-        shield.FullRefill();
     }
 
     public void MovePlayer()
