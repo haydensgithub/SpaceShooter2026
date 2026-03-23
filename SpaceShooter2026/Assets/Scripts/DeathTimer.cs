@@ -29,6 +29,8 @@ public class DeathTimer : MonoBehaviour
     {
         if (gameOver) return;
 
+        if (ui != null && !ui.IsReady) return;
+
         currentTime -= Time.deltaTime;
 
         if (currentTime <= 0)

@@ -11,8 +11,8 @@ public class Game : MonoBehaviour {
   public UI ui;
 
   // Spawn delay ranges
-  public float minEnemySpawnDelay = 3f;
-  public float maxEnemySpawnDelay = 10f;
+  //public float minEnemySpawnDelay = 3f;
+  //public float maxEnemySpawnDelay = 10f;
 
   // private fields
   private float powerUpDelay;
@@ -27,12 +27,16 @@ public class Game : MonoBehaviour {
   private float leftSpawnDelay;
   private float topSpawnDelay;
   private float bottomSpawnDelay;
-
+  private int currentSpawnTier = -1;
   
 
   private void Start() {
     powerUpDelay = Random.Range(5f, 10f);
     powerupSpawnTimer = 0;
+
+    float minEnemySpawnDelay;
+    float maxEnemySpawnDelay;
+    GetSpawnDelayRange(out minEnemySpawnDelay, out maxEnemySpawnDelay);
 
     rightSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
     leftSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
@@ -40,6 +44,7 @@ public class Game : MonoBehaviour {
     bottomSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
   }
 
+  // Randomly spawn enemies in the right spawn point
   private void SpawnEnemy() {
     Vector3 enemySpawnPt = new Vector3(
         Random.Range(spawnRange.bounds.min.x, spawnRange.bounds.max.x),
@@ -48,6 +53,7 @@ public class Game : MonoBehaviour {
     Instantiate(enemyPrefab, enemySpawnPt, Quaternion.identity);
   }
 
+  // Randomly spawn enemies in the left spawn point
   private void SpawnEnemyLeft() {
     Vector3 leftEnemySpawnPt = new Vector3(
         Random.Range(spawnRangeLeft.bounds.min.x, spawnRangeLeft.bounds.max.x),
@@ -56,6 +62,7 @@ public class Game : MonoBehaviour {
     Instantiate(enemyPrefab, leftEnemySpawnPt, Quaternion.identity);
   }
 
+  // Randomly spawn enemies in the top spawn point
   private void SpawnEnemyTop() {
     Vector3 topEnemySpawnPt = new Vector3(
         Random.Range(spawnRangeTop.bounds.min.x, spawnRangeTop.bounds.max.x),
@@ -64,6 +71,7 @@ public class Game : MonoBehaviour {
     Instantiate(enemyPrefab, topEnemySpawnPt, Quaternion.identity);
   }
 
+  // Randomly spawn enemies in the bottom spawn point
   private void SpawnEnemyBottom() {
     Vector3 bottomEnemySpawnPt = new Vector3(
         Random.Range(spawnRangeBottom.bounds.min.x, spawnRangeBottom.bounds.max.x),
@@ -78,11 +86,63 @@ public class Game : MonoBehaviour {
         0);
     Instantiate(powerupPrefab, powerupSpawnPt, Quaternion.identity);
   }
+
+  // Method to ramp up the difficulty as the death timer increases
+  private void GetSpawnDelayRange(out float minEnemySpawnDelay, out float maxEnemySpawnDelay) {
+    minEnemySpawnDelay = 4f;
+    maxEnemySpawnDelay = 6f;
+    
+    if (DeathTimer.Instance == null) {
+      if (currentSpawnTier != 0) {
+        currentSpawnTier = 0;
+        Debug.Log("Spawn Tier 0: DeathTimer not found. Using default delays: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
+      }
+      return;
+    }
+
+    float time = DeathTimer.Instance.currentTime;
+
+    if (time >= 75f ) {
+      minEnemySpawnDelay = 1f;
+      maxEnemySpawnDelay = 3f;
+      if (currentSpawnTier != 3) {
+        currentSpawnTier = 3;
+        Debug.Log("Spawn Tier 3 activated at time = " + time.ToString("F1") + ". New delay range: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
+      }
+      
+    }
+    else if (time >= 60f) {
+      minEnemySpawnDelay = 2f;
+      maxEnemySpawnDelay = 4f;
+      if (currentSpawnTier != 2) {
+        currentSpawnTier = 2;
+        Debug.Log("Spawn Tier 2 activated at time = " + time.ToString("F1") + ". New delay range: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
+      }
+    }
+    else if (time >= 45f) {
+      minEnemySpawnDelay = 3f;
+      maxEnemySpawnDelay = 5f;
+      if (currentSpawnTier != 1) {
+        currentSpawnTier = 1;
+        Debug.Log("Spawn Tier 1 activated at time = " + time.ToString("F1") + ". New delay range: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
+      }
+    }
+    else {
+      if (currentSpawnTier != 0) {
+        currentSpawnTier = 0;
+        Debug.Log("Spawn Tier 0: DeathTimer not found. Using default delays: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
+      }
+    }
+  }
   void Update() {
     if (!ui.IsReady) {
       return;
     }
 
+    float minEnemySpawnDelay;
+    float maxEnemySpawnDelay;
+    GetSpawnDelayRange(out minEnemySpawnDelay, out maxEnemySpawnDelay);
+    
     // Right spawn timer
     rightEnemySpawnTimer += Time.deltaTime;
     if (rightEnemySpawnTimer >= rightSpawnDelay) {
@@ -108,11 +168,11 @@ public class Game : MonoBehaviour {
     }
 
     // Bottom spawn timer
-    topEnemySpawnTimer += Time.deltaTime;
-    if (topEnemySpawnTimer >= topSpawnDelay) {
-      SpawnEnemyTop();
-      topEnemySpawnTimer = 0.0f;
-      topSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
+    bottomEnemySpawnTimer += Time.deltaTime;
+    if (bottomEnemySpawnTimer >= bottomSpawnDelay) {
+      SpawnEnemyBottom();
+      bottomEnemySpawnTimer = 0.0f;
+      bottomSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
     }
 
     // check spawn powerup
