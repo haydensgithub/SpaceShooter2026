@@ -34,7 +34,12 @@ public class Enemy : MonoBehaviour
         Vector2 DesiredVelocity = PlayerDirection.normalized * Speed;
 
         CurrentVelocity = Vector2.MoveTowards(CurrentVelocity, DesiredVelocity, Acceleration * Time.fixedDeltaTime);
+
         RBody.linearVelocity = CurrentVelocity;
+
+        // Rotate to face the player
+        float RotationAngle = Mathf.Atan2(-PlayerDirection.y, -PlayerDirection.x) * Mathf.Rad2Deg;
+        RBody.MoveRotation(RotationAngle);
     }
 
     void OnTriggerEnter2D(Collider2D c)

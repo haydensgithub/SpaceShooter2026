@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Game : MonoBehaviour {
@@ -15,17 +17,12 @@ public class Game : MonoBehaviour {
   private float powerUpDelay;
   private float powerupSpawnTimer;
 
-  private float rightEnemySpawnTimer;
-  private float leftEnemySpawnTimer;
-  private float topEnemySpawnTimer;
-  private float bottomEnemySpawnTimer;
+    private float currentLoggedNormalizedTime = -1f;
 
-  private float rightSpawnDelay;
-  private float leftSpawnDelay;
-  private float topSpawnDelay;
-  private float bottomSpawnDelay;
-  private int currentSpawnTier = -1;
-  
+    private void Start()
+    {
+        powerUpDelay = UnityEngine.Random.Range(5f, 10f);
+        powerupSpawnTimer = 0f;
 
   private void Start() {
     powerUpDelay = Random.Range(5f, 10f);
@@ -109,87 +106,100 @@ public class Game : MonoBehaviour {
       return;
     }
 
-    float time = DeathTimer.Instance.currentTime;
-
-    if (time >= 75f ) {
-      minEnemySpawnDelay = 1f;
-      maxEnemySpawnDelay = 3f;
-      if (currentSpawnTier != 3) {
-        currentSpawnTier = 3;
-        Debug.Log("Spawn Tier 3 activated at time = " + time.ToString("F1") + ". New delay range: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
-      }
-      
-    }
-    else if (time >= 60f) {
-      minEnemySpawnDelay = 2f;
-      maxEnemySpawnDelay = 4f;
-      if (currentSpawnTier != 2) {
-        currentSpawnTier = 2;
-        Debug.Log("Spawn Tier 2 activated at time = " + time.ToString("F1") + ". New delay range: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
-      }
-    }
-    else if (time >= 45f) {
-      minEnemySpawnDelay = 3f;
-      maxEnemySpawnDelay = 5f;
-      if (currentSpawnTier != 1) {
-        currentSpawnTier = 1;
-        Debug.Log("Spawn Tier 1 activated at time = " + time.ToString("F1") + ". New delay range: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
-      }
-    }
-    else {
-      if (currentSpawnTier != 0) {
-        currentSpawnTier = 0;
-        Debug.Log("Spawn Tier 0: DeathTimer not found. Using default delays: " + minEnemySpawnDelay + " to " + maxEnemySpawnDelay);
-      }
-    }
-  }
-  void Update() {
-    if (!ui.IsReady) {
-      return;
+    private Vector3 GetRandomPointInBox(BoxCollider2D box)
+    {
+        return new Vector3(
+          UnityEngine.Random.Range(box.bounds.min.x, box.bounds.max.x),
+          UnityEngine.Random.Range(box.bounds.min.y, box.bounds.max.y),
+          0f
+        );
     }
 
-    float minEnemySpawnDelay;
-    float maxEnemySpawnDelay;
-    GetSpawnDelayRange(out minEnemySpawnDelay, out maxEnemySpawnDelay);
-    
-    // Right spawn timer
-    rightEnemySpawnTimer += Time.deltaTime;
-    if (rightEnemySpawnTimer >= rightSpawnDelay) {
-      SpawnEnemy();
-      rightEnemySpawnTimer = 0.0f;
-      rightSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
+    private void SpawnEnemyAt(BoxCollider2D box)
+    {
+        Instantiate(enemyPrefab, GetRandomPointInBox(box), Quaternion.identity);
     }
 
-    // Left spawn timer
-    leftEnemySpawnTimer += Time.deltaTime;
-    if (leftEnemySpawnTimer >= leftSpawnDelay) {
-      SpawnEnemyLeft();
-      leftEnemySpawnTimer = 0.0f;
-      leftSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
+    private void SpawnEnemyRandomSide()
+    {
+        int spawnIndex = UnityEngine.Random.Range(0, 4);
+
+        switch (spawnIndex)
+        {
+            case 0:
+                SpawnEnemyAt(spawnRange);
+                break;
+            case 1:
+                SpawnEnemyAt(spawnRangeLeft);
+                break;
+            case 2:
+                SpawnEnemyAt(spawnRangeTop);
+                break;
+            default:
+                SpawnEnemyAt(spawnRangeBottom);
+                break;
+        }
     }
 
-    // Top spawn timer
-    topEnemySpawnTimer += Time.deltaTime;
-    if (topEnemySpawnTimer >= topSpawnDelay) {
-      SpawnEnemyTop();
-      topEnemySpawnTimer = 0.0f;
-      topSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
+    private void SpawnPowerup()
+    {
+        Vector3 powerupSpawnPt = new Vector3(
+          UnityEngine.Random.Range(spawnRange.bounds.min.x, spawnRange.bounds.max.x),
+          UnityEngine.Random.Range(spawnRange.bounds.min.y, spawnRange.bounds.max.y),
+          0f
+        );
+        Instantiate(powerupPrefab, powerupSpawnPt, Quaternion.identity);
     }
 
-    // Bottom spawn timer
-    bottomEnemySpawnTimer += Time.deltaTime;
-    if (bottomEnemySpawnTimer >= bottomSpawnDelay) {
-      SpawnEnemyBottom();
-      bottomEnemySpawnTimer = 0.0f;
-      bottomSpawnDelay = Random.Range(minEnemySpawnDelay, maxEnemySpawnDelay);
+    private float GetDifficulty01()
+    {
+        if (DeathTimer.Instance == null)
+        {
+            return 0f;
+        }
+
+        float time = DeathTimer.Instance.currentTime;
+        return Mathf.Clamp01(time / 75f);
     }
 
-    // check spawn powerup
-    powerupSpawnTimer += Time.deltaTime;
-    if (powerupSpawnTimer >= powerUpDelay) {
-      SpawnPowerup();
-      powerUpDelay = Random.Range(5, 10);
-      powerupSpawnTimer = 0.0f;
+    private float GetRandomEnemySpawnDelay()
+    {
+        float t = GetDifficulty01();
+
+        float minDelay = Mathf.Lerp(.5f, 0.25f, t);
+        float maxDelay = Mathf.Lerp(1f, 0.5f, t);
+
+        float roundedT = Mathf.Round(t * 10f) / 10f;
+        if (!Mathf.Approximately(roundedT, currentLoggedNormalizedTime))
+        {
+            currentLoggedNormalizedTime = roundedT;
+            //Debug.Log("Spawn difficulty = " + roundedT.ToString("F1") + ", delay range: " + minDelay.ToString("F2") + " to " + maxDelay.ToString("F2"));
+        }
+
+        return UnityEngine.Random.Range(minDelay, maxDelay);
     }
-  }
+
+    private void Update()
+    {
+        if (!ui.IsReady)
+        {
+            return;
+        }
+
+        enemySpawnTimer += Time.deltaTime;
+        if (enemySpawnTimer >= enemySpawnDelay)
+        {
+            SpawnEnemyRandomSide();
+            enemySpawnTimer = 0f;
+            enemySpawnDelay = GetRandomEnemySpawnDelay();
+        }
+
+        powerupSpawnTimer += Time.deltaTime;
+        if (powerupSpawnTimer >= powerUpDelay)
+        {
+            SpawnPowerup();
+            powerUpDelay = UnityEngine.Random.Range(5f, 10f);
+            powerupSpawnTimer = 0f;
+        }
+    }
 }

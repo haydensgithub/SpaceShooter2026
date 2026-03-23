@@ -121,7 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Missile
   Speed: 10
-  ExplosionRadius: 150
+  ExplosionRadius: 5
 --- !u!1 &9121743377604145004
 GameObject:
   m_ObjectHideFlags: 0
