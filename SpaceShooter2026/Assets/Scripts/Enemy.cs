@@ -9,16 +9,23 @@ public class Enemy : MonoBehaviour
     public float RotationSpeed = 720f;
     public GameObject expoPrefab;
 
+    public int maxHealth = 1; // Fast enemies will have 1 health, tanks will have 3
+
+    // private fields
+    private int currentHealth; // Keep track of the enemies health
     private Vector2 CurrentVelocity;
     private Rigidbody2D RBody; 
    
     private void Awake()
     {
         RBody = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
     }
 
     private void Update()
     {
+        if (Player.instance == null) return;
+
         // Grab the vector facing the player, return if it is very very small (identical transforms)
         Vector2 PlayerDirection = (Vector2)(Player.instance.transform.position - transform.position);
         if (PlayerDirection.sqrMagnitude < 0.001) return;
@@ -34,7 +41,8 @@ public class Enemy : MonoBehaviour
     {
         if (c.gameObject.CompareTag("Bullet"))
         {
-            Die(c);
+            TakeDamage(1);
+            Destroy(c.gameObject);
         }
         else if (c.gameObject.CompareTag("Player"))
         {
@@ -43,14 +51,22 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Die(Collider2D c)
+    public void TakeDamage(int damage) {
+      currentHealth -= damage;
+
+      if (currentHealth <= 0) {
+        Die();
+      }
+    }
+    public void Die()
     {
         var expoObj = Instantiate(expoPrefab, transform.position, Quaternion.identity);
         Destroy(expoObj, expoObj.GetComponent<ParticleSystem>().main.duration);
         Destroy(gameObject);
-        Destroy(c.gameObject);
         Score.Instance.HitEnemy();
         // Added for death timer
-        DeathTimer.Instance.AddTime(2f);
+        if (DeathTimer.Instance != null) {
+          DeathTimer.Instance.AddTime(2f);
+        }
     }
 }

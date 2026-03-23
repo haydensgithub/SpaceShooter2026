@@ -33,7 +33,8 @@ public class Missile : MonoBehaviour
 
                 if (enemy != null)
                 {
-                    enemy.Die(GetComponent<Collider2D>());
+                    // Missiles auto kill fast and tank enemies
+                    enemy.TakeDamage(3);
                 }
             }
         }

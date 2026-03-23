@@ -1692,7 +1692,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa86d516b0794a75a7a1b4b9de4851c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game
-  enemyPrefab: {fileID: 3409777995842195204, guid: 992015109d2204d5c9a3ef2da01e8542, type: 3}
+  fastEnemyPrefab: {fileID: 3409777995842195204, guid: 992015109d2204d5c9a3ef2da01e8542, type: 3}
+  tankEnemyPrefab: {fileID: 0}
   powerupPrefab: {fileID: 7665686937186703866, guid: 07f2ea3b03915449aa7e57f1e6305b14, type: 3}
   spawnRange: {fileID: 1681509736}
   spawnRangeLeft: {fileID: 2143069178}
@@ -3723,7 +3724,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Spacer Shooterer
+  m_text: Spacer Shooter
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
