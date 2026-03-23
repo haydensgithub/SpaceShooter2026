@@ -1985,7 +1985,8 @@ MonoBehaviour:
   sliderHealth: {fileID: 73900209}
   expoPrefab: {fileID: 5386597588948128404, guid: 8a7efade44ac549dda33630687e1524f, type: 3}
   ui: {fileID: 1637983210}
-  clipNormalFire: {fileID: 8300000, guid: 300c0d97332b597418cc89072a822ac0, type: 3}
+  clipNormalFire1: {fileID: 8300000, guid: 0884bd4a3bc52ea45ac2abf620953e01, type: 3}
+  clipNormalFire2: {fileID: 8300000, guid: fa43a977f2a253540974d73fa4ce52a9, type: 3}
   clipSuperFire: {fileID: 8300000, guid: cea606ae0b858414f9b6101ce85628f1, type: 3}
   clipHurt: {fileID: 8300000, guid: 61ac9204846676b4c8eac71e7c5e725f, type: 3}
   clipPowerupReceived: {fileID: 8300000, guid: 242ff58202d137f48a00787ce5251b5c, type: 3}

@@ -13,7 +13,8 @@ public class Player : MonoBehaviour
     public Slider sliderHealth;
     public GameObject expoPrefab;
     public UI ui;
-    public AudioClip clipNormalFire;
+    public AudioClip clipNormalFire1;
+    public AudioClip clipNormalFire2;
     public AudioClip clipSuperFire;
     public AudioClip clipHurt;
     public AudioClip clipPowerupReceived;
@@ -49,7 +50,9 @@ public class Player : MonoBehaviour
         if (SpaceShooterInput.Instance.input.Fire.WasPressedThisFrame())
         {
             GameObject bulletObj = Instantiate(bulletPrefab, bulletSpawnPoint.position, transform.rotation);
-            audioSrc.clip = clipNormalFire;
+            int Rand = UnityEngine.Random.Range(0, 1);
+            if (Rand == 0) audioSrc.clip = clipNormalFire1;
+            else audioSrc.clip = clipNormalFire2;
             audioSrc.Play();
         }
         else if (SpaceShooterInput.Instance.input.SuperFire.WasPressedThisFrame())
