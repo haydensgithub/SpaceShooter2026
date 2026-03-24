@@ -59,6 +59,19 @@ public class DeathTimer : MonoBehaviour
         {
             timerText.text = "Time: " + currentTime.ToString("F1");
         }
+        if (currentTime <= 10f)
+        {
+            float t = Mathf.PingPong(Time.time * 5f, 1f);
+            timerText.color = Color.Lerp(Color.orange, Color.red, t);
+        }
+        else if (currentTime <= 15f)
+        {
+            timerText.color = Color.orange;
+        }
+        else
+        {
+            timerText.color = Color.white;
+        }
     }
 
     void EndGame()

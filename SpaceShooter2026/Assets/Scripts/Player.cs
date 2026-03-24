@@ -1,7 +1,8 @@
 using System.Collections.Specialized;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.InputSystem; // Needed to grab the mouse position
+using UnityEngine.InputSystem;
+using TMPro; // Needed to grab the mouse position
 
 public class Player : MonoBehaviour
 {
@@ -19,8 +20,9 @@ public class Player : MonoBehaviour
     public AudioClip clipSuperFire;
     public AudioClip clipHurt;
     public AudioClip clipPowerupReceived;
+    public TMP_Text missileCounter;
     public int MissileCount = 0;
-
+    public int MaxMissileCount = 3;
 
     public static Player instance { get; private set; }
 
@@ -49,6 +51,16 @@ public class Player : MonoBehaviour
     private void Update()
     {
         sliderHealth.value = health;
+        missileCounter.text = "Missiles: " + MissileCount;
+
+        if (MissileCount == 0)
+        {
+            missileCounter.color = Color.red;
+        }
+        else
+        {
+            missileCounter.color = Color.white;
+        }
 
         if (SpaceShooterInput.Instance.input.Fire.WasPressedThisFrame())
         {

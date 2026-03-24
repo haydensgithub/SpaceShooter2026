@@ -103,7 +103,7 @@ MonoBehaviour:
   Acceleration: 8
   RotationSpeed: 720
   expoPrefab: {fileID: 5386597588948128404, guid: 8a7efade44ac549dda33630687e1524f, type: 3}
-  maxHealth: 15
+  maxHealth: 10
 --- !u!50 &-1162253528925871094
 Rigidbody2D:
   serializedVersion: 5

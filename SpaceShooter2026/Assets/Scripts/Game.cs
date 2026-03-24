@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     public BoxCollider2D spawnRangeLeft;
     public BoxCollider2D spawnRangeTop;
     public BoxCollider2D spawnRangeBottom;
+    public float sharkPhaseStartTime = 60f;
     public UI ui;
 
     private float powerUpDelay;
@@ -33,11 +34,34 @@ public class Game : MonoBehaviour
 
     private GameObject GetRandomEnemyPrefab()
     {
-        float roll = UnityEngine.Random.value;
+        if (DeathTimer.Instance == null)
+        {
+            return fastEnemyPrefab;
+        }
 
-        if (roll <= 0.75f) return fastEnemyPrefab;
-        else if (roll > 0.9f && DeathTimer.Instance.currentTime > 45f) return sharkEnemyPrefab;
-        else return tankEnemyPrefab;
+        float time = DeathTimer.Instance.currentTime;
+
+        if (time >= 75f)
+        {
+            return sharkEnemyPrefab;
+        }
+        else if (time >= 50f)
+        {
+            float roll = UnityEngine.Random.value;
+            if (roll <= 0.65f)
+                return fastEnemyPrefab;
+            else
+                return tankEnemyPrefab;
+        }
+        else
+        {
+            float roll = UnityEngine.Random.value;
+            if (roll <= 0.85f)
+                return fastEnemyPrefab;
+            else
+                return tankEnemyPrefab;
+        }
+        
     }
 
     private Vector3 GetRandomPointInBox(BoxCollider2D box)
@@ -102,6 +126,13 @@ public class Game : MonoBehaviour
 
         float minDelay = Mathf.Lerp(0.5f, 0.25f, t);
         float maxDelay = Mathf.Lerp(1f, 0.5f, t);
+
+        // Slow down spawns in the shark phase to make it more manageable
+        if (DeathTimer.Instance != null && DeathTimer.Instance.currentTime >= sharkPhaseStartTime)
+        {
+            minDelay = 1f;
+            maxDelay = 2f;
+        }
 
         float roundedT = Mathf.Round(t * 10f) / 10f;
         if (!Mathf.Approximately(roundedT, currentLoggedNormalizedTime))

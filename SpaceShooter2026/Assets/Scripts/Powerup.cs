@@ -25,7 +25,10 @@ public class Powerup : MonoBehaviour {
             Player p = c.gameObject.GetComponent<Player>();
             if (p != null)
             {
-                p.MissileCount++;
+                if (p.MissileCount < p.MaxMissileCount)
+                {
+                    p.MissileCount++;
+                }
             }
 
             AudioSource.PlayClipAtPoint(PickupClip, Camera.main.transform.position, 1f);
