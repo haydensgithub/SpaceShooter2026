@@ -124,14 +124,14 @@ public class Game : MonoBehaviour
     {
         float t = GetDifficulty01();
 
-        float minDelay = Mathf.Lerp(0.5f, 0.25f, t);
-        float maxDelay = Mathf.Lerp(1f, 0.5f, t);
+        float minDelay = Mathf.Lerp(1f, 0.20f, t);
+        float maxDelay = Mathf.Lerp(1.5f, .25f, t);
 
         // Slow down spawns in the shark phase to make it more manageable
         if (DeathTimer.Instance != null && DeathTimer.Instance.currentTime >= sharkPhaseStartTime)
         {
-            minDelay = 1f;
-            maxDelay = 2f;
+            minDelay = .75f;
+            maxDelay = 1.5f;
         }
 
         float roundedT = Mathf.Round(t * 10f) / 10f;
