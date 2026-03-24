@@ -15,6 +15,11 @@ public class Powerup : MonoBehaviour {
     }
     else if (c.gameObject.CompareTag("Player")) {
            Destroy(gameObject);
-    }
+            Player p = c.gameObject.GetComponent<Player>();
+            if (p != null)
+            {
+                p.MissileCount++;
+            }
+        }
   }
 }

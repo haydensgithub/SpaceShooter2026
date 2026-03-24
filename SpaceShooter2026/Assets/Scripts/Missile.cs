@@ -1,9 +1,18 @@
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
     public float Speed = .95f;
     public float ExplosionRadius = 150;
+    public AudioClip ExplodeClip;
+    private AudioSource audioSrc;
+
+
+    private void Start()
+    {
+        audioSrc = GetComponent<AudioSource>();
+    }
 
     // Update is called once per frame
     void Update() {
@@ -35,10 +44,11 @@ public class Missile : MonoBehaviour
                 {
                     // Missiles auto kill fast and tank enemies
                     enemy.TakeDamage(3);
+                    
                 }
             }
         }
-
+        AudioSource.PlayClipAtPoint(ExplodeClip, Camera.main.transform.position, 1f);
         Destroy(gameObject);
     }
 }

@@ -15,9 +15,12 @@ public class Player : MonoBehaviour
     public UI ui;
     public AudioClip clipNormalFire1;
     public AudioClip clipNormalFire2;
+    public AudioClip clipNoMissiles;
     public AudioClip clipSuperFire;
     public AudioClip clipHurt;
     public AudioClip clipPowerupReceived;
+    public int MissileCount = 0;
+
 
     public static Player instance { get; private set; }
 
@@ -57,9 +60,22 @@ public class Player : MonoBehaviour
         }
         else if (SpaceShooterInput.Instance.input.SuperFire.WasPressedThisFrame())
         {
-            GameObject missileObject = Instantiate(missilePrefab, bulletSpawnPoint.position, transform.rotation);
-            audioSrc.clip = clipSuperFire;
-            audioSrc.Play();
+            if (MissileCount > 0)
+            {
+                MissileCount--;
+                GameObject missileObject = Instantiate(missilePrefab, bulletSpawnPoint.position, transform.rotation);
+                int Rand = UnityEngine.Random.Range(0, 1);
+                if (Rand == 0) audioSrc.clip = clipNormalFire1;
+                else audioSrc.clip = clipNormalFire2;
+                audioSrc.Play();
+            }
+            else
+            {
+                {
+                    audioSrc.clip = clipNoMissiles;
+                    audioSrc.Play();
+                }
+            }
         }
 
         MovePlayer();

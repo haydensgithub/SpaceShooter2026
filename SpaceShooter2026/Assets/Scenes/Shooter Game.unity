@@ -1295,7 +1295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Game
   fastEnemyPrefab: {fileID: 3409777995842195204, guid: 992015109d2204d5c9a3ef2da01e8542, type: 3}
-  tankEnemyPrefab: {fileID: 0}
+  tankEnemyPrefab: {fileID: 3409777995842195204, guid: c4d150e209930d04a90e4eba76dddb8b, type: 3}
   powerupPrefab: {fileID: 7665686937186703866, guid: 07f2ea3b03915449aa7e57f1e6305b14, type: 3}
   spawnRange: {fileID: 1681509736}
   spawnRangeLeft: {fileID: 2143069178}
@@ -1987,9 +1987,11 @@ MonoBehaviour:
   ui: {fileID: 1637983210}
   clipNormalFire1: {fileID: 8300000, guid: 0884bd4a3bc52ea45ac2abf620953e01, type: 3}
   clipNormalFire2: {fileID: 8300000, guid: fa43a977f2a253540974d73fa4ce52a9, type: 3}
+  clipNoMissiles: {fileID: 8300000, guid: dff217cf1d97ce447b8f03b8287c83be, type: 3}
   clipSuperFire: {fileID: 8300000, guid: cea606ae0b858414f9b6101ce85628f1, type: 3}
   clipHurt: {fileID: 8300000, guid: 61ac9204846676b4c8eac71e7c5e725f, type: 3}
   clipPowerupReceived: {fileID: 8300000, guid: 242ff58202d137f48a00787ce5251b5c, type: 3}
+  MissileCount: 3
 --- !u!58 &786289105
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3546,8 +3548,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 2a9515b5a0e15e1438d3ae8847a66d66, type: 3}
-  m_PlayOnAwake: 0
+  m_Resource: {fileID: 8300000, guid: 93a9b370bbb1e8747ae75722762b4285, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 0.737
   m_Pitch: 1
   Loop: 1

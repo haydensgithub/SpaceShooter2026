@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
         if (c.gameObject.CompareTag("Bullet"))
         {
             TakeDamage(1);
-            Destroy(c.gameObject);
+                Destroy(c.gameObject);
         }
         else if (c.gameObject.CompareTag("Player"))
         {
