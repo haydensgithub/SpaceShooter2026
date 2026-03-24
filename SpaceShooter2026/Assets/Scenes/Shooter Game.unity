@@ -1296,6 +1296,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Game
   fastEnemyPrefab: {fileID: 3409777995842195204, guid: 992015109d2204d5c9a3ef2da01e8542, type: 3}
   tankEnemyPrefab: {fileID: 3409777995842195204, guid: c4d150e209930d04a90e4eba76dddb8b, type: 3}
+  sharkEnemyPrefab: {fileID: 3409777995842195204, guid: 4d84df9d1ba95e949822cb53c6be6f88, type: 3}
   powerupPrefab: {fileID: 7665686937186703866, guid: 07f2ea3b03915449aa7e57f1e6305b14, type: 3}
   spawnRange: {fileID: 1681509736}
   spawnRangeLeft: {fileID: 2143069178}

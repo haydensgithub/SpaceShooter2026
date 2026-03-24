@@ -6,6 +6,7 @@ public class Game : MonoBehaviour
 {
     public GameObject fastEnemyPrefab;
     public GameObject tankEnemyPrefab;
+    public GameObject sharkEnemyPrefab;
     public GameObject powerupPrefab;
     public BoxCollider2D spawnRange;
     public BoxCollider2D spawnRangeLeft;
@@ -33,14 +34,10 @@ public class Game : MonoBehaviour
     private GameObject GetRandomEnemyPrefab()
     {
         float roll = UnityEngine.Random.value;
-        if (roll <= 0.75f)
-        {
-            return fastEnemyPrefab;
-        }
-        else
-        {
-            return tankEnemyPrefab;
-        }
+
+        if (roll <= 0.75f) return fastEnemyPrefab;
+        else if (roll > 0.9f && DeathTimer.Instance.currentTime > 45f) return sharkEnemyPrefab;
+        else return tankEnemyPrefab;
     }
 
     private Vector3 GetRandomPointInBox(BoxCollider2D box)

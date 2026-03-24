@@ -3,8 +3,15 @@ using UnityEngine;
 public class Powerup : MonoBehaviour {
   // set in inspector
   public float speed;
+    public AudioClip PickupClip;
+    private AudioSource audioSrc;
 
-  void Update() {
+    private void Start()
+    {
+        audioSrc = GetComponent<AudioSource>();
+    }
+
+    void Update() {
     transform.Translate(Vector3.left * speed * Time.deltaTime);
   }
 
@@ -20,6 +27,8 @@ public class Powerup : MonoBehaviour {
             {
                 p.MissileCount++;
             }
+
+            AudioSource.PlayClipAtPoint(PickupClip, Camera.main.transform.position, 1f);
         }
   }
 }

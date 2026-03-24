@@ -414,3 +414,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Powerup
   speed: 3
+  PickupClip: {fileID: 8300000, guid: 4d694bd3afe2f664aad013830e07cf2f, type: 3}
